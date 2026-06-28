@@ -1,0 +1,156 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              String       @id @default(uuid())
+  firstName       String
+  lastName        String?
+  email           String       @unique
+  password        String
+  role            UserRole
+  pushToken       String?
+  isOnline        Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  restaurants     Restaurant[]
+  customerOrders  Order[]      @relation("CustomerOrders")
+  driverOrders    Order[]      @relation("DriverOrders")
+  customerReviews Reviews[]    @relation("CustomerReviews")
+  driverReviews   Reviews[]    @relation("DriverReviews")
+
+  @@map("users")
+}
+
+model Restaurant {
+  id             String         @id @default(uuid())
+  ownerId        String
+  owner          User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name           String
+  imageUrl       String?
+  description    String?
+  address        String
+  cuisineType    String[]
+  isOpen         Boolean        @default(false)
+  rating         Float?         @default(0)
+  numReviews     Int?           @default(0)
+  latitude       Float?
+  longitude      Float?
+  phoneNumber    String?
+  websiteUrl     String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  menuCategories MenuCategory[]
+  menuItems      MenuItem[]
+  orders         Order[]
+  reviews        Reviews[]
+
+  @@map("restaurants")
+}
+
+model MenuCategory {
+  id           String     @id @default(uuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  menuItems    MenuItem[]
+
+  @@map("menu_categories")
+}
+
+model MenuItem {
+  id           String       @id @default(uuid())
+  categoryId   String
+  category     MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  restaurantId String
+  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  name         String
+  description  String?
+  price        Float
+  imageUrl     String?
+  isAvailable  Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  orderItems   OrderItem[]
+
+  @@map("menu_items")
+}
+
+model Order {
+  id                    String      @id @default(uuid())
+  customerId            String
+  customer              User        @relation("CustomerOrders", fields: [customerId], references: [id], onDelete: Cascade)
+  restaurantId          String
+  restaurant            Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  driverId              String
+  driver                User        @relation("DriverOrders", fields: [driverId], references: [id], onDelete: Cascade)
+  status                OrderStatus @default(PENDING)
+  totalAmount           Float
+  deliveryFee           Float?
+  deliveryAddress       String
+  stripePaymentIntentId String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  orderItems            OrderItem[]
+  reviews               Reviews[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  quantity   Int
+  unitPrice  Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("order_items")
+}
+
+model Reviews {
+  id               String     @id @default(uuid())
+  customerId       String
+  customer         User       @relation("CustomerReviews", fields: [customerId], references: [id], onDelete: Cascade)
+  restaurantId     String
+  restaurant       Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  orderId          String
+  order            Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  driverId         String
+  driver           User       @relation("DriverReviews", fields: [driverId], references: [id], onDelete: Cascade)
+  restaurantRating Int
+  driverRating     Int?
+  comment          String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@map("reviews")
+}
+
+enum UserRole {
+  CUSTOMER
+  RESTAURANT_OWNER
+  DRIVER
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  PICKED_UP
+  OUT_FOR_DELIVERY
+  DELIVERED
+  COMPLETED
+  CANCELLED
+}

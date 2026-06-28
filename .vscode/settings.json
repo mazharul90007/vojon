@@ -1,0 +1,12 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "editor.colorDecorators": true,
+  "editor.defaultColorDecorators": "always",
+  "editor.colorDecoratorsActivatedOn": "clickAndHover",
+  "tailwindCSS.colorDecorators": false,
+  "colorize.languages": ["css", "scss", "sass", "less"],
+  "colorize.include": ["**/*.{css,scss,sass,less}"],
+  "colorize.colorized_colors": ["HEXA", "RGB", "HSL"],
+  "colorHelper.resident": true
+}
