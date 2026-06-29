@@ -11,12 +11,12 @@
     "lint": "expo lint"
   },
   "dependencies": {
-    "@vojon/types": "workspace:*",
     "@expo/vector-icons": "^15.0.3",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.8",
     "@tanstack/react-query": "^5.101.1",
+    "@vojon/types": "workspace:*",
     "axios": "^1.18.1",
     "expo": "~54.0.34",
     "expo-constants": "~18.0.13",
@@ -25,6 +25,7 @@
     "expo-image": "~3.0.11",
     "expo-linking": "~8.0.12",
     "expo-router": "~6.0.23",
+    "expo-secure-store": "^56.0.4",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
     "expo-symbols": "~1.0.8",

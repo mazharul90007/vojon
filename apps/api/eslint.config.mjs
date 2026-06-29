@@ -32,4 +32,11 @@ export default tseslint.config(
       "prettier/prettier": ["error", { endOfLine: "auto" }],
     },
   },
+  {
+    files: ['src/**/*.dto.ts'],
+    rules: {
+      // class-validator decorators are typed as PropertyDecorator; type-aware ESLint can't resolve them reliably
+      '@typescript-eslint/no-unsafe-call': 'off',
+    },
+  },
 );
