@@ -1,6 +1,6 @@
 generator client {
   provider     = "prisma-client"
-  output       = "../generated/prisma"
+  output       = "../src/generated/prisma"
   moduleFormat = "cjs"
 }
 
@@ -138,6 +138,7 @@ model Reviews {
 }
 
 enum UserRole {
+  ADMIN
   CUSTOMER
   RESTAURANT_OWNER
   DRIVER

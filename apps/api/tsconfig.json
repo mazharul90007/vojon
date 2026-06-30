@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src/**/*", "lib/**/*", "generated/**/*", "prisma.config.ts"],
+  "include": ["src/**/*", "prisma.config.ts"],
   "compilerOptions": {
     "composite": true,
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "resolvePackageJsonExports": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
     "isolatedModules": true,
     "declaration": true,
     "removeComments": true,

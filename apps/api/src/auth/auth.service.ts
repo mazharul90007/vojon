@@ -3,7 +3,7 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../generated/prisma/client';
+import { User } from '../generated/prisma/client';
 import { JwtPayload } from '@vojon/types';
 import { LoginDto } from './dto/login.dto';
 
